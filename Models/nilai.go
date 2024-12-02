@@ -19,12 +19,12 @@ type NilaiSiswaPkl struct {
 	Jurusan string `json:"jurusan"`
 	Rombel  string `json:"rombel"`
 
-	NilaiSoftskillFasilitator   int `json:"nilai_softskill_fasilitator"`
-	NilaiSoftskillIndustri      int `json:"nilai_softskill_industri"`
-	NilaiHardskillPembimbing    int `json:"nilai_hardskill_pembimbing"`
-	NilaiHardskillIndustri      int `json:"nilai_hardskill_industri"`
-	NilaiKemandirianFasilitator int `json:"nilai_kemandirian_fasilitator"`
-	NilaiPengujianPembimbing    int `json:"nilai_pengujian_pembimbing"`
+	NilaiSoftskillFasilitator   float32 `json:"nilai_softskill_fasilitator" gorm:"type:float"`
+	NilaiSoftskillIndustri      float32 `json:"nilai_softskill_industri" gorm:"type:float"`
+	NilaiHardskillPembimbing    float32 `json:"nilai_hardskill_pembimbing" gorm:"type:float"`
+	NilaiHardskillIndustri      float32 `json:"nilai_hardskill_industri" gorm:"type:float"`
+	NilaiKemandirianFasilitator float32 `json:"nilai_kemandirian_fasilitator" gorm:"type:float"`
+	NilaiPengujianPembimbing    float32 `json:"nilai_pengujian_pembimbing" gorm:"type:float"`
 
 	TanggalMasuk  *time.Time `json:"tanggal_masuk" gorm:"date"`
 	TanggalKeluar *time.Time `json:"tanggal_keluar" gorm:"date"`
@@ -39,20 +39,20 @@ type NilaiSiswaPklPembimbing struct {
 	Kelas                    string `json:"kelas"`
 	Jurusan                  string `json:"jurusan"`
 	Rombel                   string `json:"rombel"`
-	NilaiSoftskillIndustri   int    `json:"nilai_softskill_industri"`
-	NilaiHardskillIndustri   int    `json:"nilai_hardskill_industri"`
-	NilaiHardskillPembimbing int    `json:"nilai_hardskill_pembimbing"`
-	NilaiPengujianPembimbing int    `json:"nilai_pengujian_pembimbing"`
+	NilaiSoftskillIndustri   int    `json:"nilai_softskill_industri" gorm:"type:float"`
+	NilaiHardskillIndustri   int    `json:"nilai_hardskill_industri" gorm:"type:float"`
+	NilaiHardskillPembimbing int    `json:"nilai_hardskill_pembimbing" gorm:"type:float"`
+	NilaiPengujianPembimbing int    `json:"nilai_pengujian_pembimbing" gorm:"type:float"`
 }
 
 type NilaiSiswaPklFasilitator struct {
-	NIS                         string `json:"nis"`
-	Nama                        string `json:"nama"`
-	Kelas                       string `json:"kelas"`
-	Jurusan                     string `json:"jurusan"`
-	Rombel                      string `json:"rombel"`
-	NilaiSoftskillFasilitator   int    `json:"nilai_softskill_fasilitator"`
-	NilaiKemandirianFasilitator int    `json:"nilai_kemandirian_fasilitator"`
+	NIS                         string  `json:"nis"`
+	Nama                        string  `json:"nama"`
+	Kelas                       string  `json:"kelas"`
+	Jurusan                     string  `json:"jurusan"`
+	Rombel                      string  `json:"rombel"`
+	NilaiSoftskillFasilitator   float32 `json:"nilai_softskill_fasilitator" gorm:"type:float"`
+	NilaiKemandirianFasilitator float32 `json:"nilai_kemandirian_fasilitator" gorm:"type:float"`
 }
 
 type IndustriForNilai struct {
@@ -65,16 +65,16 @@ type IndustriForNilai struct {
 
 type ReqUpdateNilaiPembimbing struct {
 	NIS                      string  `json:"nis"`
-	NilaiSoftskillIndustri   float64 `json:"nilai_softskill_industri"`
-	NilaiHardskillIndustri   float64 `json:"nilai_hardskill_industri"`
-	NilaiHardskillPembimbing float64 `json:"nilai_hardskill_pembimbing"`
-	NilaiPengujianPembimbing float64 `json:"nilai_pengujian_pembimbing"`
+	NilaiSoftskillIndustri   float32 `json:"nilai_softskill_industri" gorm:"type:float"`
+	NilaiHardskillIndustri   float32 `json:"nilai_hardskill_industri" gorm:"type:float"`
+	NilaiHardskillPembimbing float32 `json:"nilai_hardskill_pembimbing" gorm:"type:float"`
+	NilaiPengujianPembimbing float32 `json:"nilai_pengujian_pembimbing" gorm:"type:float"`
 }
 
 type ReqUpdateNilaiFasilitator struct {
 	NIS                         string  `json:"nis"`
-	NilaiSoftskillFasilitator   float64 `json:"nilai_softskill_fasilitator"`
-	NilaiKemandirianFasilitator float64 `json:"nilai_kemandirian_fasilitator"`
+	NilaiSoftskillFasilitator   float32 `json:"nilai_softskill_fasilitator" gorm:"type:float"`
+	NilaiKemandirianFasilitator float32 `json:"nilai_kemandirian_fasilitator" gorm:"type:float"`
 }
 
 func GetIndustriPembimbing(id int) ([]IndustriPembimbingFasil, error) {

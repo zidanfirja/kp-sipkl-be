@@ -49,7 +49,7 @@ func GetJumlahPembimbing(c *gin.Context) {
 		"data":    total,
 		"message": "success",
 	})
-	return
+
 }
 
 func GetJumlahFasilitator(c *gin.Context) {
@@ -64,7 +64,7 @@ func GetJumlahFasilitator(c *gin.Context) {
 		"data":    total,
 		"message": "success",
 	})
-	return
+
 }
 
 func GetJumlahHubin(c *gin.Context) {
@@ -79,7 +79,7 @@ func GetJumlahHubin(c *gin.Context) {
 		"data":    total,
 		"message": "success",
 	})
-	return
+
 }
 
 func GetJumlahSiswaPkl(c *gin.Context) {
@@ -94,11 +94,11 @@ func GetJumlahSiswaPkl(c *gin.Context) {
 		"data":    total,
 		"message": "success",
 	})
-	return
+
 }
 
 func GetJumlahPemangku(c *gin.Context) {
-	total, err := Models.GetJumlahPemangku()
+	total, err := Models.GetTotalPemangku()
 	if err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{
 			"error": err,
@@ -109,7 +109,7 @@ func GetJumlahPemangku(c *gin.Context) {
 		"data":    total,
 		"message": "success",
 	})
-	return
+
 }
 
 func GetJumlahWakel(c *gin.Context) {
@@ -124,5 +124,54 @@ func GetJumlahWakel(c *gin.Context) {
 		"data":    total,
 		"message": "success",
 	})
-	return
+
+}
+
+func JumlahSetiapPemangku(c *gin.Context) {
+
+	dataJumlahPemangku, total, err := Models.GetJumlahSetiapPemangku()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	type RespJumlahPemangku struct {
+		Total          int                     `json:"total"`
+		DaftarPemangku []Models.JumlahPemangku `json:"daftar_pemangku"`
+	}
+
+	data := RespJumlahPemangku{
+		Total:          total,
+		DaftarPemangku: dataJumlahPemangku,
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
+}
+
+func TotalSiswaPklJurusan(c *gin.Context) {
+	dataJumlahSiswa, total, err := Models.GetTotalSiswaPklJurusan()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	type RespJumlahSiswa struct {
+		Total       int                            `json:"total"`
+		DaftarSiswa []Models.JumlahSiswaPklJurusan `json:"daftar_siswa"`
+	}
+
+	data := RespJumlahSiswa{
+		Total:       total,
+		DaftarSiswa: dataJumlahSiswa,
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
 }
