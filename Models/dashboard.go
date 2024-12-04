@@ -17,7 +17,7 @@ type RiwayatUpdateNilaiPembimbing struct {
 	NilaiHardskillPembimbing float32   `json:"nilai_hardskill_pembimbing"`
 	NilaiHardskillIndustri   float32   `json:"nilai_hardskill_industri"`
 	NilaiPengujianPembimbing float32   `json:"nilai_pengujian_pembimbing"`
-	NamaPerusahaan           string    `json:"nama_industri"  gorm:"column:nama_industri"`
+	NamaIndustri             string    `json:"nama_industri"  gorm:"column:nama_industri"`
 	AlamatPerusahaan         string    `json:"alamat_industri"  gorm:"column:alamat_industri"`
 	NamaPembimbing           string    `json:"nama_pembimbing"`
 	UpdatedAtNilaiPembimbing time.Time `json:"update_at_nilai_pembimbing"`
@@ -30,10 +30,10 @@ type RiwayatUpdateNilaiFasilitator struct {
 	Rombel  string `json:"rombel"`
 	NIS     string `json:"nis"`
 
-	NilaiSoftskillFasilitator   float32   `json:"nilai_softskill_fasilitator"`
 	NilaiKemandirianFasilitator float32   `json:"nilai_kemandirian_fasilitator"`
-	NamaPerusahaan              string    `json:"nama_industri"`
-	NamaPembimbing              string    `json:"nama_pembimbing"`
+	NilaiSoftskillFasilitator   float32   `json:"nilai_softskill_fasilitator"`
+	NamaIndustri                string    `json:"nama_industri"`
+	NamaFasilitator             string    `json:"nama_fasilitator"`
 	UpdatedAtNilaiFasilitator   time.Time `json:"update_at_nilai_fasilitator"`
 }
 
@@ -69,11 +69,14 @@ func GetRiwayatNilaiFasilitator() ([]RiwayatUpdateNilaiFasilitator, error) {
 
 	var dataRiwayat []RiwayatUpdateNilaiFasilitator
 
-	query := `SELECT data_siswa.nama as nama, data_siswa.kelas, data_siswa.jurusan as jurusan, data_siswa.rombel, data_siswa.nis, pegawai.nama as nama_pembimbing, data_siswa.nama as nama_siswa, nilai_kemandirian_fasilitator, nilai_softskill_fasilitator, industri.nama as nama_industri, industri.alamat as alamat_industri, pegawai.nama as nama_pembimbing,updated_at_nilai_pembimbing 
+	query := `SELECT data_siswa.nama as nama, data_siswa.kelas as kelas, data_siswa.jurusan as jurusan, data_siswa.rombel, data_siswa.nis as nis,
+	nilai_kemandirian_fasilitator, nilai_softskill_fasilitator,
+	industri.nama as nama_industri,industri.alamat as alamat_industri, pegawai.nama as nama_fasilitator, updated_at_nilai_fasilitator
 	FROM data_siswa
-	JOIN pegawai ON pegawai.id = data_siswa.fk_id_pembimbing
-	JOIN industri ON industri.id = data_siswa.fk_id_industri
-	WHERE updated_at_nilai_pembimbing IS NOT NULL`
+	JOIN pegawai on pegawai.id = data_siswa.fk_id_fasilitator
+	JOIN industri on industri.id = data_siswa.fk_id_industri
+	WHERE updated_at_nilai_fasilitator IS NOT NULL
+	ORDER BY updated_at_nilai_fasilitator DESC`
 
 	rows := DB.Database.Raw(query).Scan(&dataRiwayat)
 	return dataRiwayat, rows.Error
