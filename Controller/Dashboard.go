@@ -163,13 +163,13 @@ func JumlahSetiapIndustri(c *gin.Context) {
 	}
 
 	type RespJumlahIndustri struct {
-		Total          int                     `json:"total"`
-		DaftarIndustri []Models.JumlahIndustri `json:"daftar_industri"`
+		Total                int                        `json:"total"`
+		DaftarJumlahIndustri []Models.JumlahIndustriPkl `json:"daftar_jurusan"`
 	}
 
 	data := RespJumlahIndustri{
-		Total:          total,
-		DaftarIndustri: dataJumlahIndustri,
+		Total:                total,
+		DaftarJumlahIndustri: dataJumlahIndustri,
 	}
 
 	c.JSON(http.StatusOK, gin.H{
