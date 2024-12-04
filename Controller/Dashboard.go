@@ -152,6 +152,31 @@ func JumlahSetiapPemangku(c *gin.Context) {
 	})
 }
 
+func JumlahSetiapIndustri(c *gin.Context) {
+
+	dataJumlahIndustri, total, err := Models.GetJumlahSetiapIndustri()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err.Error(),
+		})
+		return
+	}
+
+	type RespJumlahIndustri struct {
+		Total          int                     `json:"total"`
+		DaftarIndustri []Models.JumlahIndustri `json:"daftar_industri"`
+	}
+
+	data := RespJumlahIndustri{
+		Total:          total,
+		DaftarIndustri: dataJumlahIndustri,
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
+}
+
 func TotalSiswaPklJurusan(c *gin.Context) {
 	dataJumlahSiswa, total, err := Models.GetTotalSiswaPklJurusan()
 	if err != nil {

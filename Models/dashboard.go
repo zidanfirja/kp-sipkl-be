@@ -42,6 +42,11 @@ type JumlahPemangku struct {
 	Total        int    `json:"total"`
 }
 
+type JumlahIndustri struct {
+	NamaIndustri string `json:"nama"`
+	Total        int    `json:"total"`
+}
+
 type JumlahSiswaPklJurusan struct {
 	Jurusan string `json:"jurusan" gorm:"column:jurusan"`
 	Total   int    `json:"total"`
@@ -124,6 +129,14 @@ func GetTotalPemangku() (int, error) {
 	return int(jumlah), err
 }
 
+func GetTotalIndustri() (int, error) {
+	var jumlah int64
+	query := `SELECT COUNT(DISTINCT(id)) as total_industri FROM industri`
+
+	err := DB.Database.Raw(query).Scan(&jumlah).Error
+	return int(jumlah), err
+}
+
 func GetTotalJurusan() (int, error) {
 	var jumlah int64
 	query := `SELECT COUNT(DISTINCT(jurusan)) as jurusan FROM data_siswa`
@@ -161,9 +174,9 @@ func GetJumlahSetiapPemangku() ([]JumlahPemangku, int, error) {
 
 	var data []JumlahPemangku
 	query := `
-	SELECT role.nama as nama, COUNT(fk_id_pegawai) as total from konfigurasi_roles 
-	JOIN role on role.id = konfigurasi_roles.fk_id_role
-	GROUP BY fk_id_role
+	SELECT role.nama AS nama, COUNT(konfigurasi_roles.fk_id_pegawai) AS total FROM konfigurasi_roles 
+	JOIN role ON role.id = konfigurasi_roles.fk_id_role 
+	GROUP BY role.nama;
 	`
 
 	log.Println(data)
@@ -174,6 +187,30 @@ func GetJumlahSetiapPemangku() ([]JumlahPemangku, int, error) {
 	}
 
 	return data, totalAllPemangku, nil
+
+}
+
+func GetJumlahSetiapIndustri() ([]JumlahIndustri, int, error) {
+
+	totalAllIndustri, err := GetTotalIndustri()
+	if err != nil {
+		return nil, 0, err
+
+	}
+
+	var data []JumlahIndustri
+	query := `SELECT industri.nama as nama_industri, COUNT(data_siswa.jurusan) as total FROM industri
+	LEFT JOIN data_siswa on data_siswa.fk_id_industri = industri.id
+	GROUP BY industri.nama`
+
+	log.Println(data)
+
+	rows := DB.Database.Raw(query).Scan(&data)
+	if rows.Error != nil {
+		return nil, 0, rows.Error
+	}
+
+	return data, totalAllIndustri, nil
 
 }
 
