@@ -199,8 +199,9 @@ func GetJumlahSetiapIndustri() ([]JumlahIndustriPkl, int, error) {
 	}
 
 	var data []JumlahIndustriPkl
-	query := `SELECT data_siswa.jurusan AS nama_jurusan, COUNT(industri.nama) AS total FROM data_siswa
-	JOIN industri ON industri.id = data_siswa.fk_id_industri
+	query := `SELECT data_siswa.jurusan AS nama_jurusan, COUNT(DISTINCT industri.id) AS total 
+	FROM data_siswa
+	JOIN industri ON  industri.id = data_siswa.fk_id_industri
 	GROUP BY data_siswa.jurusan`
 	log.Println(data)
 
