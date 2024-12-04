@@ -347,3 +347,17 @@ func GetNilaiPklWakel(c *gin.Context) {
 	})
 
 }
+
+func AllDataNilaiPKL(c *gin.Context) {
+	data, err := Models.GetAllNilaiPKL()
+	if err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{
+			"error": err,
+		})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": data,
+	})
+}
